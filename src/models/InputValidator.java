@@ -1,4 +1,4 @@
-package Models;
+package models;
 
 public class InputValidator {
 
@@ -7,8 +7,17 @@ public class InputValidator {
      * @param input The input string to validate.
      * @return true if the input length is valid, false otherwise.
      */
-    public static boolean validateLength(String input) {
-        return input.length() == 7;
+    public static boolean validateTooLong(String input) {
+        return input.length() > 7;
+    }
+
+    /**
+     * Validates the length of the input.
+     * @param input The input string to validate.
+     * @return true if the input length is valid, false otherwise.
+     */
+    public static boolean validateTooShort(String input) {
+        return input.length() < 7;
     }
 
     /**

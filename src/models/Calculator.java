@@ -1,4 +1,6 @@
-package Models;
+package models;
+
+import views.Messages;
 
 import java.util.Stack;
 
@@ -10,24 +12,26 @@ public class Calculator {
      * @param guess the input
      * @return true if the input is valid and the result is correct
      */
-    static boolean validateAndCompute(String guess) {
+    static boolean validateAndCompute(String guess) throws CalculationException {
 
-        //Validate the length of the input
-        if (!InputValidator.validateLength(guess)) {
-            CLIColorPrinter.printWarn(guess.length() < 7 ? "Too Short" : "Too Long");
-            return false;
+        //Validate if too long
+        if (InputValidator.validateTooLong(guess)) {
+            throw new CalculationException(Messages.TOO_LONG);
+        }
+
+        //Validate if too short
+        if (InputValidator.validateTooShort(guess)) {
+            throw new CalculationException(Messages.TOO_SHORT);
         }
 
         // upper case the input
         if (!InputValidator.validateCharacters(guess)) {
-            CLIColorPrinter.printWarn("Invalid character");
-            return false;
+            throw new CalculationException(Messages.INVALID_CHARACTER);
         }
 
         // check have equal sign
         if (!InputValidator.validateEqualSign(guess)) {
-            CLIColorPrinter.printWarn("No equal \"=\" sign");
-            return false;
+            throw new CalculationException(Messages.NO_EQUAL_SIGN);
         }
 
         // remove all white spaces
@@ -36,8 +40,7 @@ public class Calculator {
         // separate the input by the equal sign
         String[] parts = guess.split("=");
         if (parts.length != 2) {
-            CLIColorPrinter.printWarn("The left side is not equal to the right side");
-            return false;
+            throw new CalculationException(Messages.NOT_EQUAL);
         }
 
         try {
@@ -48,14 +51,12 @@ public class Calculator {
             // because of the precision of double, we need to use a small value to compare
             boolean ifEqual = Math.abs(leftResult - rightResult) < 0.0001;
             if (!ifEqual) {
-                CLIColorPrinter.printWarn("The left side is not equal to the right side");
-                return false;
+                throw new CalculationException(Messages.NOT_EQUAL);
             } else {
                 return true;
             }
         } catch (Exception e) {
-            CLIColorPrinter.printWarn("The left side is not equal to the right side");
-            return false;
+            throw new CalculationException(Messages.NOT_EQUAL);
         }
     }
 
@@ -65,7 +66,7 @@ public class Calculator {
      * @param expression the expression
      * @return the result
      */
-    private static double evaluateExpression(String expression) {
+    private static double evaluateExpression(String expression) throws CalculationException {
         Stack<Double> numbers = new Stack<>();
         Stack<Character> operations = new Stack<>();
 
@@ -77,22 +78,29 @@ public class Calculator {
                     number = number * 10 + (expression.charAt(i) - '0');
                     i++;
                 }
-                i--;
+                i--; // Decrement i because it will be incremented by for loop after continuing
                 numbers.push((double) number);
             } else if (current == '+' || current == '-' || current == '*' || current == '/') {
                 while (!operations.isEmpty() && hasPrecedence(current, operations.peek())) {
-                    numbers.push(applyOp(operations.pop(), numbers.pop(), numbers.pop()));
+                    // Correct the order of operands when applying the operation
+                    double b = numbers.pop();
+                    double a = numbers.pop();
+                    numbers.push(applyOp(operations.pop(), b, a));
                 }
                 operations.push(current);
             }
         }
 
+        // Apply remaining operations to remaining numbers
         while (!operations.isEmpty()) {
-            numbers.push(applyOp(operations.pop(), numbers.pop(), numbers.pop()));
+            double b = numbers.pop();
+            double a = numbers.pop();
+            numbers.push(applyOp(operations.pop(), b, a));
         }
 
         return numbers.pop();
     }
+
 
     /**
      * Check if the first operation has precedence over the second operation
@@ -102,10 +110,7 @@ public class Calculator {
      * @return true if the first operation has precedence over the second operation, false otherwise
      */
     private static boolean hasPrecedence(char op1, char op2) {
-        if (op2 == '(' || op2 == ')') {
-            return false;
-        }
-        return (op1 != '*' && op1 != '/') || (op2 != '+' && op2 != '-');
+        return !(op1 == '*' || op1 == '/') || (op2 == '+' || op2 == '-');
     }
 
     /**
@@ -116,17 +121,17 @@ public class Calculator {
      * @param a  the first number
      * @return the result
      */
-    private static double applyOp(char op, double b, double a) {
+    private static double applyOp(char op, double b, double a) throws CalculationException {
         return switch (op) {
             case '+' -> a + b;
             case '-' -> a - b;
             case '*' -> a * b;
             case '/' -> {
                 if (b == 0)
-                    throw new UnsupportedOperationException("Cannot divide by zero");
+                    throw new CalculationException(Messages.NOT_EQUAL);
                 yield a / b;
             }
-            default -> 0;
+            default -> throw new CalculationException(Messages.INVALID_INPUT);
         };
     }
 }

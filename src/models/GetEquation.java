@@ -1,4 +1,4 @@
-package Models;
+package models;
 
 import java.io.*;
 import java.nio.file.Files;
