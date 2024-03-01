@@ -7,40 +7,34 @@ public class Calculator {
     /**
      * Validate the input and compute the result
      *
-     * @param guss the input
+     * @param guess the input
      * @return true if the input is valid and the result is correct
      */
-    public static boolean validateAndCompute(String guss) {
+    static boolean validateAndCompute(String guess) {
 
         //Validate the length of the input
-        if (guss.length() < 7) {
-            CLIColorPrinter.printWarn("Too Shot");
-            return false;
-        }
-
-        //Validate the length of the input
-        if (guss.length() > 7) {
-            CLIColorPrinter.printWarn("Too Long");
+        if (!InputValidator.validateLength(guess)) {
+            CLIColorPrinter.printWarn(guess.length() < 7 ? "Too Short" : "Too Long");
             return false;
         }
 
         // upper case the input
-        if (!guss.matches("[0-9+\\-*/= ]+")) {
+        if (!InputValidator.validateCharacters(guess)) {
             CLIColorPrinter.printWarn("Invalid character");
             return false;
         }
 
         // check have equal sign
-        if (guss.indexOf('=') == -1) {
-            CLIColorPrinter.printWarn("no equal \"=\" sign");
+        if (!InputValidator.validateEqualSign(guess)) {
+            CLIColorPrinter.printWarn("No equal \"=\" sign");
             return false;
         }
 
         // remove all white spaces
-        guss = guss.replaceAll("\\s", "");
+        guess = guess.replaceAll("\\s", "");
 
         // separate the input by the equal sign
-        String[] parts = guss.split("=");
+        String[] parts = guess.split("=");
         if (parts.length != 2) {
             CLIColorPrinter.printWarn("The left side is not equal to the right side");
             return false;

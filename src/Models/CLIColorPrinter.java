@@ -2,19 +2,21 @@ package Models;
 
 /**
  * CLIColorPrinter
+ * This class is used to print colored text to the console of the CIL interface
  */
 public class CLIColorPrinter {
     private static final String ORANGE = "\u001B[33m";
     private static final String GREEN = "\u001B[32m";
     private static final String GRAY = "\u001B[90m";
     private static final String RED = "\u001B[31m";
+    private static final String RESET = "\u001B[0m";
 
     /**
      * printOrange
      * @param text the text to print
      */
     public static void printOrange(String text) {
-        System.out.print(ORANGE + text + "\u001B[0m");
+        print(text, ORANGE);
     }
 
     /**
@@ -22,7 +24,7 @@ public class CLIColorPrinter {
      * @param text the text to print
      */
     public static void printGreen(String text) {
-        System.out.print(GREEN + text + "\u001B[0m");
+        print(text, GREEN);
     }
 
     /**
@@ -30,7 +32,7 @@ public class CLIColorPrinter {
      * @param text the text to print
      */
     public static void printGray(String text) {
-        System.out.print(GRAY + text + "\u001B[0m");
+        print(text, GRAY);
     }
 
     /**
@@ -38,6 +40,16 @@ public class CLIColorPrinter {
      * @param text the text to print
      */
     public static void printWarn(String text) {
-        System.out.println(RED + text + "\u001B[0m");
+        print(text, RED);
+        System.out.println();
+    }
+
+    /**
+     * print
+     * @param text the text to print
+     * @param color the color to print the text
+     */
+    private static void print(String text, String color) {
+        System.out.print(color + text + RESET);
     }
 }

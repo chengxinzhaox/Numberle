@@ -11,7 +11,7 @@ public class GetEquation {
      * Get a random equation from the file
      * @return a random equation
      */
-    public static String getEquation() {
+    static String getEquation() {
         try {
             List<String> lines = Files.readAllLines(Paths.get("src/equations.txt"));
             int randomIndex = ThreadLocalRandom.current().nextInt(lines.size());

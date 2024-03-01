@@ -2,17 +2,17 @@ package Models;
 
 public class GameManager {
 
-    static String equation = GetEquation.getEquation();
-    static String[] userLog = new String[equation.length()];
-    static int guessTime = 0;
+    private static final String equation = GetEquation.getEquation();
+    private static final String[] userLog = new String[equation.length()];
+    private static int guessTime = 0;
 
     /**
      * Print the user log
      */
     public static void printUserLog() {
         System.out.println("-YOUR LOG-");
-        for (int i = 0; i < equation.length(); i++) {
-            printSingleList(userLog[i]);
+        for (String logList : userLog) {
+            printSingleList(logList);
             System.out.println();
         }
         System.out.println("-".repeat(10));
@@ -24,8 +24,7 @@ public class GameManager {
      */
     public static void updateUserLog(String guess) {
             if (guessTime < equation.length()) {
-                userLog[guessTime] = guess;
-                guessTime++;
+                userLog[guessTime++] = guess;
             }
     }
 
@@ -43,7 +42,7 @@ public class GameManager {
      * @param guess the user's guess
      * @return true if the user wins, false otherwise
      */
-    public static Boolean ifWin(String guess) {
+    public static boolean ifWin(String guess) {
         return equation.equals(guess);
     }
 
@@ -52,7 +51,7 @@ public class GameManager {
      * @param guess the user's guess
      * @return true if the guess is correct, false otherwise
      */
-    public static Boolean gussVerification(String guess) {
+    public static boolean guessVerification(String guess) {
         return Calculator.validateAndCompute(guess);
     }
 
@@ -60,32 +59,19 @@ public class GameManager {
      * Print a single list
      * @param list the list to print
      */
-    public static void printSingleList(String list) {
-        String[] equationMatrix = stringToMatrix(equation);
-        String[] listMatrix = stringToMatrix(list);
-        for (int i = 0; i < equation.length(); i++) {
-            if (equationMatrix[i].equals(listMatrix[i])) {
-                CLIColorPrinter.printGreen(listMatrix[i]);
-            } else if (equation.contains(listMatrix[i])) {
-                CLIColorPrinter.printOrange(listMatrix[i]);
-            } else {
-                CLIColorPrinter.printGray(listMatrix[i]);
-            }
+    private static void printSingleList(String list) {
+    for (int i = 0; i < equation.length(); i++) {
+        char equationChar = equation.charAt(i);
+        char listChar = list.charAt(i);
+        if (equationChar == listChar) {
+            CLIColorPrinter.printGreen(Character.toString(listChar));
+        } else if (equation.contains(Character.toString(listChar))) {
+            CLIColorPrinter.printOrange(Character.toString(listChar));
+        } else {
+            CLIColorPrinter.printGray(Character.toString(listChar));
         }
     }
-
-    /**
-     * Convert a string to a matrix
-     * @param string the string to convert
-     * @return the matrix
-     */
-    private static String[] stringToMatrix(String string) {
-        String[] matrix = new String[string.length()];
-        for (int i = 0; i < string.length(); i++) {
-            matrix[i] = String.valueOf(string.charAt(i));
-        }
-        return matrix;
-    }
+}
 
     /**
      * Initialize the game
@@ -96,7 +82,7 @@ public class GameManager {
         System.out.println("GAME BEGINS");
 
         for (int i = 0; i < equation.length(); i++) {
-            userLog[i] = "_______";
+            userLog[i] = "_".repeat(equation.length());
         }
         System.out.println(equation);
         printUserLog();
