@@ -6,17 +6,33 @@ public class Calculator {
 
     /**
      * Validate the input and compute the result
+     *
      * @param guss the input
      * @return true if the input is valid and the result is correct
      */
     public static boolean validateAndCompute(String guss) {
+
         //Validate the length of the input
-        if (guss.length() != 7) {
+        if (guss.length() < 7) {
+            CLIColorPrinter.printWarn("Too Shot");
+            return false;
+        }
+
+        //Validate the length of the input
+        if (guss.length() > 7) {
+            CLIColorPrinter.printWarn("Too Long");
             return false;
         }
 
         // upper case the input
         if (!guss.matches("[0-9+\\-*/= ]+")) {
+            CLIColorPrinter.printWarn("Invalid character");
+            return false;
+        }
+
+        // check have equal sign
+        if (guss.indexOf('=') == -1) {
+            CLIColorPrinter.printWarn("no equal \"=\" sign");
             return false;
         }
 
@@ -26,6 +42,7 @@ public class Calculator {
         // separate the input by the equal sign
         String[] parts = guss.split("=");
         if (parts.length != 2) {
+            CLIColorPrinter.printWarn("The left side is not equal to the right side");
             return false;
         }
 
@@ -35,14 +52,22 @@ public class Calculator {
             double rightResult = evaluateExpression(parts[1]);
 
             // because of the precision of double, we need to use a small value to compare
-            return Math.abs(leftResult - rightResult) < 0.0001;
+            boolean ifEqual = Math.abs(leftResult - rightResult) < 0.0001;
+            if (!ifEqual) {
+                CLIColorPrinter.printWarn("The left side is not equal to the right side");
+                return false;
+            } else {
+                return true;
+            }
         } catch (Exception e) {
+            CLIColorPrinter.printWarn("The left side is not equal to the right side");
             return false;
         }
     }
 
     /**
      * Evaluate the expression
+     *
      * @param expression the expression
      * @return the result
      */
@@ -77,6 +102,7 @@ public class Calculator {
 
     /**
      * Check if the first operation has precedence over the second operation
+     *
      * @param op1 the first operation
      * @param op2 the second operation
      * @return true if the first operation has precedence over the second operation, false otherwise
@@ -85,18 +111,15 @@ public class Calculator {
         if (op2 == '(' || op2 == ')') {
             return false;
         }
-        if ((op1 == '*' || op1 == '/') && (op2 == '+' || op2 == '-')) {
-            return false;
-        } else {
-            return true;
-        }
+        return (op1 != '*' && op1 != '/') || (op2 != '+' && op2 != '-');
     }
 
     /**
      * Apply the operation
+     *
      * @param op the operation
-     * @param b the second number
-     * @param a the first number
+     * @param b  the second number
+     * @param a  the first number
      * @return the result
      */
     private static double applyOp(char op, double b, double a) {

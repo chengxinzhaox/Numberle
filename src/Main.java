@@ -9,7 +9,7 @@ public class Main {
         //Initialize the game
         GameManager.initializeGame();
 
-        String guess = "";
+        String guess;
 
         do {
             Scanner scanner = new Scanner(System.in);
@@ -22,9 +22,8 @@ public class Main {
             if (isGuessCorrect) {
                 GameManager.updateUserLog(guess);
                 GameManager.printUserLog();
-            } else {
-                CLIColorPrinter.printWarn("Invalid guess, try again");
             }
+
         } while (!GameManager.ifOver(guess));
 
         if (GameManager.ifWin(guess)) {
