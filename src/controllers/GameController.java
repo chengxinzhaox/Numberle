@@ -12,30 +12,56 @@ public class GameController {
     private final CLIView gameView;
     private final Game game;
     private final Scanner scanner;
+    private final boolean showErrorFlag;
+    private final boolean showEquationFlag;
+    private final boolean randomEquationFlag;
 
     /**
      * Constructor
      *
-     * @param game the game manager
-     * @param gameView    the game view
+     * @param game     the game manager
+     * @param gameView the game view
      */
     public GameController(Game game, CLIView gameView) {
         this.game = game;
         this.gameView = gameView;
         this.scanner = new Scanner(System.in);
+
+        showErrorFlag = getFlag(Messages.SHOW_ERROR_MESSAGE);
+        showEquationFlag = getFlag(Messages.SHOW_EQUATION_MESSAGE);
+        randomEquationFlag = getFlag(Messages.RANDOM_EQUATION_MESSAGE);
     }
+
+    private boolean getFlag(String message) {
+        String input;
+        while (true) {
+            gameView.printMessage(message);
+            input = scanner.nextLine().trim().toLowerCase();
+            if (input.equals("y") || input.equals("yes")) {
+                return true;
+            } else if (input.equals("n") || input.equals("no")) {
+                return false;
+            } else {
+                gameView.printMessage(Messages.INVALID_INPUT);
+            }
+        }
+    }
+
 
     /**
      * Start the game
      */
     public void startGame() {
 
-        game.initializeGame();
+        game.initializeGame(randomEquationFlag);
         gameView.printGameStart();
         String guess;
 
         do {
             gameView.printMessage(Messages.ENTER_GUESS);
+            if (showEquationFlag) {
+                gameView.printMessage(Messages.TARGET_EQUATION_MESSAGE + game.getEquation());
+            }
             guess = scanner.nextLine();
 
             try {
@@ -44,7 +70,9 @@ public class GameController {
                     gameView.printUserLog(game.getUserLog(), game.getEquation());
                 }
             } catch (CalculationException e) {
-                gameView.printWarn(e.getMessage());
+                if (showErrorFlag) {
+                    gameView.printWarn(e.getMessage());
+                }
             }
         } while (!game.ifOver(guess));
 

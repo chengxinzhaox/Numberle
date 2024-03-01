@@ -12,7 +12,7 @@ public class Calculator {
      * @param guess the input
      * @return true if the input is valid and the result is correct
      */
-    static boolean validateAndCompute(String guess) throws CalculationException {
+    public static boolean validateAndCompute(String guess) throws CalculationException {
 
         //Validate if too long
         if (InputValidator.validateTooLong(guess)) {
@@ -110,7 +110,7 @@ public class Calculator {
      * @return true if the first operation has precedence over the second operation, false otherwise
      */
     private static boolean hasPrecedence(char op1, char op2) {
-        return !(op1 == '*' || op1 == '/') || (op2 == '+' || op2 == '-');
+        return (op1 != '*' && op1 != '/') || (op2 != '+' && op2 != '-');
     }
 
     /**

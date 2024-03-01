@@ -8,14 +8,13 @@ public class Game {
 
     private static final int LIMIT = 6;
     private static int guessTime = 0;
-    private final String equation;
+    private String equation= "";
     private final String[] userLog;
 
     /**
      * Constructor
      */
     public Game() {
-        this.equation = GetEquation.getEquation();
         this.userLog = new String[LIMIT];
     }
 
@@ -81,9 +80,15 @@ public class Game {
     /**
      * Initialize the game
      */
-    public void initializeGame() {
+    public void initializeGame(boolean randomEquation) {
+
+        if (randomEquation) {
+            equation = GetEquation.getRandomEquation();
+        } else {
+            equation = GetEquation.getFixedEquation(1);
+        }
+
         Arrays.fill(userLog, Messages.PLACE_HOLDER.repeat(equation.length()));
         guessTime = 0;
-        System.out.println(equation);
     }
 }

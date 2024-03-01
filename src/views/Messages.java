@@ -9,6 +9,12 @@ public class Messages {
     public static final String WIN_MESSAGE = "Congratulations! You win!";
     public static final String LOSE_MESSAGE = "Sorry, you lose!";
 
+    public static final String TARGET_EQUATION_MESSAGE = "Target equation: ";
+    public static final String SHOW_ERROR_MESSAGE = "Show error message if the equation is not valid? (y/n): ";
+    public static final String SHOW_EQUATION_MESSAGE = "Display the target equation for testing purposes? (y/n): ";
+    public static final String RANDOM_EQUATION_MESSAGE = "Should the equation be randomly selected? (y/n): ";
+
+
     public static final String NOT_EQUAL = "The left side is not equal to the right side";
     public static final String INVALID_CHARACTER = "Invalid character";
     public static final String TOO_LONG = "Too long";

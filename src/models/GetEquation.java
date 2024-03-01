@@ -11,11 +11,20 @@ public class GetEquation {
      * Get a random equation from the file
      * @return a random equation
      */
-    static String getEquation() {
+    static String getRandomEquation() {
         try {
             List<String> lines = Files.readAllLines(Paths.get("src/equations.txt"));
             int randomIndex = ThreadLocalRandom.current().nextInt(lines.size());
             return lines.get(randomIndex);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    static String getFixedEquation(int index) {
+        try {
+            List<String> lines = Files.readAllLines(Paths.get("src/equations.txt"));
+            return lines.get(index);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
