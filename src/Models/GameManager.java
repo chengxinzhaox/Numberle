@@ -1,10 +1,13 @@
 package Models;
 
+import java.util.Arrays;
+
 public class GameManager {
 
-    private static final String equation = GetEquation.getEquation();
-    private static final String[] userLog = new String[equation.length()];
+    private static final int LIMIT = 6;
     private static int guessTime = 0;
+    private static final String equation = GetEquation.getEquation();
+    private static final String[] userLog = new String[LIMIT];
 
     /**
      * Print the user log
@@ -34,7 +37,7 @@ public class GameManager {
      * @return true if the game is over, false otherwise
      */
     public static Boolean ifOver(String guess) {
-        return (guessTime == equation.length()) || ifWin(guess);
+        return (guessTime == LIMIT) || ifWin(guess);
     }
 
     /**
@@ -81,9 +84,7 @@ public class GameManager {
         System.out.println("_".repeat(40));
         System.out.println("GAME BEGINS");
 
-        for (int i = 0; i < equation.length(); i++) {
-            userLog[i] = "_".repeat(equation.length());
-        }
+        Arrays.fill(userLog, "_".repeat(equation.length()));
         System.out.println(equation);
         printUserLog();
     }
