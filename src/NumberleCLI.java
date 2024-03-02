@@ -1,4 +1,5 @@
 import models.CalculationException;
+import models.CharType;
 import models.GameModel;
 import models.IGameModel;
 import views.Messages;
@@ -24,7 +25,7 @@ public class NumberleCLI {
     }
 
     /**
-     * Start the game
+     * Start the game, the main logic of the game
      */
     private void startGame() {
         gameModel.initializeGame(randomEquationFlag);
@@ -165,18 +166,18 @@ public class NumberleCLI {
      */
     private void printSingleList(String list, String equation) {
         for (int i = 0; i < equation.length(); i++) {
-            char equationChar = equation.charAt(i);
-            char listChar = list.charAt(i);
-            if (equationChar == listChar) {
-                printGreen(Character.toString(listChar));
-            } else if (equation.contains(Character.toString(listChar))) {
-                printOrange(Character.toString(listChar));
-            } else {
-                printGray(Character.toString(listChar));
+            CharType charType = gameModel.checkCharType(list.charAt(i), i);
+            switch (charType) {
+                case GREEN -> printGreen(String.valueOf(list.charAt(i)));
+                case ORANGE -> printOrange(String.valueOf(list.charAt(i)));
+                case GRAY -> printGray(String.valueOf(list.charAt(i)));
             }
         }
     }
 
+    /**
+     * CLIColors
+     */
     private enum CLIColors {
         ORANGE("\033[33m"),
         GREEN("\033[32m"),

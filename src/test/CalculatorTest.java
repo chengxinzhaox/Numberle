@@ -19,10 +19,7 @@ public class CalculatorTest {
 
     @Test
     public void testValidateAndComputeThrowsExceptionWithSpecificMessage() {
-        CalculationException thrown = assertThrows(CalculationException.class, () -> {
-            Calculator.validateAndCompute("2+1*2=5");
-        }, "Expected validateAndCompute() to throw CalculationException, but it didn't");
-
+        CalculationException thrown = assertThrows(CalculationException.class, () -> Calculator.validateAndCompute("2+1*2=5"), "Expected validateAndCompute() to throw CalculationException, but it didn't");
         assertEquals(Messages.NOT_EQUAL, thrown.getMessage(), "The exception message was not as expected");
     }
 }

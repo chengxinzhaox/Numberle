@@ -1,7 +1,6 @@
 package models;
 
 import views.Messages;
-
 import java.util.Arrays;
 
 public class GameModel implements IGameModel {
@@ -34,6 +33,17 @@ public class GameModel implements IGameModel {
     @Override
     public boolean guessVerification(String guess) throws CalculationException {
         return Calculator.validateAndCompute(guess);
+    }
+
+    @Override
+    public CharType checkCharType(char c, int index) {
+        if (c == equation.charAt(index)) {
+            return CharType.GREEN;
+        } else if (equation.contains(String.valueOf(c))) {
+            return CharType.ORANGE;
+        } else {
+            return CharType.GRAY;
+        }
     }
 
     @Override

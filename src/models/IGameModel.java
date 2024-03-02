@@ -35,6 +35,15 @@ public interface IGameModel {
     boolean guessVerification(String guess) throws CalculationException;
 
     /**
+     * Check the character type
+     *
+     * @param c     the character
+     * @param index the index
+     * @return the character type
+     */
+    CharType checkCharType(char c, int index);
+
+    /**
      * Get the user log
      *
      * @return the user log
