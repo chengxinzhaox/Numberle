@@ -3,13 +3,13 @@ package controllers;
 import models.GameModel;
 import models.CalculationException;
 import views.Messages;
-import views.CLIView;
+import views.View;
 
 import java.util.Scanner;
 
 public class GameController {
 
-    private final CLIView gameView;
+    private final View gameView;
     private final GameModel gameModel;
     private final Scanner scanner;
     private final boolean showErrorFlag;
@@ -22,7 +22,7 @@ public class GameController {
      * @param gameModel     the game manager
      * @param gameView the game view
      */
-    public GameController(GameModel gameModel, CLIView gameView) {
+    public GameController(GameModel gameModel, View gameView) {
         this.gameModel = gameModel;
         this.gameView = gameView;
         this.scanner = new Scanner(System.in);

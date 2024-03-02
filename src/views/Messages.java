@@ -14,6 +14,9 @@ public class Messages {
     public static final String SHOW_EQUATION_MESSAGE = "Display the target equation for testing purposes? (y/n): ";
     public static final String RANDOM_EQUATION_MESSAGE = "Should the equation be randomly selected? (y/n): ";
 
+    public static final String GREEN_INFO = "Green character means it's in the equation and in the correct spot";
+    public static final String ORANGE_INFO = "Orange character means it's in the equation, but in the wrong spot.";
+    public static final String GRAY_INFO = "Gray character means it's not in the target equation at all.";
 
     public static final String NOT_EQUAL = "The left side is not equal to the right side";
     public static final String INVALID_CHARACTER = "Invalid character";

@@ -13,7 +13,7 @@ public class GetEquation {
      */
     static String getRandomEquation() {
         try {
-            List<String> lines = Files.readAllLines(Paths.get("src/equations.txt"));
+            List<String> lines = Files.readAllLines(Paths.get("src/resource/equations.txt"));
             int randomIndex = ThreadLocalRandom.current().nextInt(lines.size());
             return lines.get(randomIndex);
         } catch (IOException e) {
@@ -21,10 +21,10 @@ public class GetEquation {
         }
     }
 
-    static String getFixedEquation(int index) {
+    static String getFixedEquation() {
         try {
-            List<String> lines = Files.readAllLines(Paths.get("src/equations.txt"));
-            return lines.get(index);
+            List<String> lines = Files.readAllLines(Paths.get("src/resource/equations.txt"));
+            return lines.get(1);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

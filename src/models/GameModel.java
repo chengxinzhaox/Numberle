@@ -52,7 +52,7 @@ public class GameModel implements IGameModel {
         if (randomEquation) {
             equation = GetEquation.getRandomEquation();
         } else {
-            equation = GetEquation.getFixedEquation(1);
+            equation = GetEquation.getFixedEquation();
         }
 
         Arrays.fill(userLog, Messages.PLACE_HOLDER.repeat(equation.length()));

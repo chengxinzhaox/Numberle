@@ -1,6 +1,6 @@
 package views;
 
-public class CLIView {
+public class View {
 
     private static final String ORANGE = "\u001B[33m";
     private static final String GREEN = "\u001B[32m";
