@@ -1,15 +1,15 @@
 
 import controllers.GameController;
-import models.Game;
+import models.GameModel;
 import views.CLIView;
 
-public class Main_CLI {
+public class NumberleCLI {
     public static void main(String[] args) {
 
-        Game game = new Game();
+        GameModel gameModel = new GameModel();
         CLIView gameView = new CLIView();
 
-        GameController controller = new GameController(game, gameView);
+        GameController controller = new GameController(gameModel, gameView);
 
         controller.startGame();
     }

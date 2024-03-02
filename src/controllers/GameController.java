@@ -1,6 +1,6 @@
 package controllers;
 
-import models.Game;
+import models.GameModel;
 import models.CalculationException;
 import views.Messages;
 import views.CLIView;
@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class GameController {
 
     private final CLIView gameView;
-    private final Game game;
+    private final GameModel gameModel;
     private final Scanner scanner;
     private final boolean showErrorFlag;
     private final boolean showEquationFlag;
@@ -19,11 +19,11 @@ public class GameController {
     /**
      * Constructor
      *
-     * @param game     the game manager
+     * @param gameModel     the game manager
      * @param gameView the game view
      */
-    public GameController(Game game, CLIView gameView) {
-        this.game = game;
+    public GameController(GameModel gameModel, CLIView gameView) {
+        this.gameModel = gameModel;
         this.gameView = gameView;
         this.scanner = new Scanner(System.in);
 
@@ -53,30 +53,30 @@ public class GameController {
      */
     public void startGame() {
 
-        game.initializeGame(randomEquationFlag);
+        gameModel.initializeGame(randomEquationFlag);
         gameView.printGameStart();
         String guess;
 
         do {
             gameView.printMessage(Messages.ENTER_GUESS);
             if (showEquationFlag) {
-                gameView.printMessage(Messages.TARGET_EQUATION_MESSAGE + game.getEquation());
+                gameView.printMessage(Messages.TARGET_EQUATION_MESSAGE + gameModel.getEquation());
             }
             guess = scanner.nextLine();
 
             try {
-                if (game.guessVerification(guess)) {
-                    game.updateUserLog(guess);
-                    gameView.printUserLog(game.getUserLog(), game.getEquation());
+                if (gameModel.guessVerification(guess)) {
+                    gameModel.updateUserLog(guess);
+                    gameView.printUserLog(gameModel.getUserLog(), gameModel.getEquation());
                 }
             } catch (CalculationException e) {
                 if (showErrorFlag) {
                     gameView.printWarn(e.getMessage());
                 }
             }
-        } while (!game.ifOver(guess));
+        } while (!gameModel.ifOver(guess));
 
-        if (game.ifWin(guess)) {
+        if (gameModel.ifWin(guess)) {
             gameView.printGreen(Messages.WIN_MESSAGE);
         } else {
             gameView.printWarn(Messages.LOSE_MESSAGE);
