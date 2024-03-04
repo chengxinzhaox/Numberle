@@ -1,18 +1,15 @@
 package models;
 
 import views.Messages;
+
 import java.util.Arrays;
 import java.util.Observable;
 
 public class GameModel extends Observable implements IGameModel {
 
-    private static int guessTime = 0;
-    private String equation = "";
-    private final String[] userLog;
-
-    public GameModel() {
-        this.userLog = new String[LIMIT];
-    }
+    private String equation;
+    private String[] userLog;
+    private int guessTime;
 
     @Override
     public void updateUserLog(String guess) {
@@ -60,6 +57,9 @@ public class GameModel extends Observable implements IGameModel {
     @Override
     public void initializeGame(boolean randomEquation) {
 
+        userLog = new String[LIMIT];
+        guessTime = 0;
+
         if (randomEquation) {
             equation = GetEquation.getRandomEquation();
         } else {
@@ -67,6 +67,8 @@ public class GameModel extends Observable implements IGameModel {
         }
 
         Arrays.fill(userLog, Messages.PLACE_HOLDER.repeat(equation.length()));
-        guessTime = 0;
+
+        setChanged();
+        notifyObservers();
     }
 }
