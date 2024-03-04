@@ -2,8 +2,9 @@ package models;
 
 import views.Messages;
 import java.util.Arrays;
+import java.util.Observable;
 
-public class GameModel implements IGameModel {
+public class GameModel extends Observable implements IGameModel {
 
     private static int guessTime = 0;
     private String equation = "";
