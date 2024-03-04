@@ -1,12 +1,14 @@
 package views;
 
-public class MyColors extends java.awt.Color {
+import java.awt.Color;
 
-    public MyColors(int r, int g, int b) {
-        super(r, g, b);
+public class MyColors extends Color {
+
+    public static final MyColors GRAY = new MyColors("#dde1ec");
+    public static final MyColors DEEP_GRAY = new MyColors("#5c6374");
+    public static final MyColors TINT_GRAY = new MyColors("#f8faff");
+
+    public MyColors(String hex) {
+        super(Integer.parseInt(hex.substring(1), 16));
     }
-
-    public static final MyColors GRAY = new MyColors(221, 225, 236);
-
-    public static final MyColors DEEP_GRAY = new MyColors(92, 99, 116);
 }

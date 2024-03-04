@@ -12,6 +12,24 @@ public class GameModel extends Observable implements IGameModel {
     private int guessTime;
 
     @Override
+    public void initializeGame(boolean randomEquation) {
+
+        userLog = new String[LIMIT];
+        guessTime = 0;
+
+        if (randomEquation) {
+            equation = GetEquation.getRandomEquation();
+        } else {
+            equation = GetEquation.getFixedEquation();
+        }
+
+        Arrays.fill(userLog, Messages.PLACE_HOLDER.repeat(equation.length()));
+
+        setChanged();
+        notifyObservers();
+    }
+
+    @Override
     public void updateUserLog(String guess) {
         if (guessTime < this.equation.length()) {
             userLog[guessTime++] = guess;
@@ -52,23 +70,5 @@ public class GameModel extends Observable implements IGameModel {
     @Override
     public String getEquation() {
         return equation;
-    }
-
-    @Override
-    public void initializeGame(boolean randomEquation) {
-
-        userLog = new String[LIMIT];
-        guessTime = 0;
-
-        if (randomEquation) {
-            equation = GetEquation.getRandomEquation();
-        } else {
-            equation = GetEquation.getFixedEquation();
-        }
-
-        Arrays.fill(userLog, Messages.PLACE_HOLDER.repeat(equation.length()));
-
-        setChanged();
-        notifyObservers();
     }
 }
