@@ -1,4 +1,6 @@
-package views;
+package views.Components;
+
+import views.MyColors;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,7 +8,7 @@ import java.awt.*;
 /**
  * The number cell class
  */
-class NumberCell extends JTextField {
+public class NumberCell extends JTextField {
 
     // The width and height of the arc
     private static final int ARC = 15;
@@ -35,6 +37,15 @@ class NumberCell extends JTextField {
         setForeground(MyColors.DEEP_GRAY);
         setFont(new Font("Arial", Font.BOLD, 20));
 
+    }
+
+    /**
+     *  Set the color of the cell
+     * @param Color The color of the cell
+     */
+    public void setColor(MyColors Color) {
+        setBackground(Color);
+        setForeground(MyColors.white);
     }
 
     /**

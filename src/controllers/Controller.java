@@ -1,0 +1,44 @@
+package controllers;
+
+import models.CalculationException;
+import models.Model;
+
+public class Controller {
+
+    private final Model model;
+
+    public Controller(Model model) {
+        this.model = model;
+    }
+
+    public boolean guessVerification(String guess) throws CalculationException {
+        return model.guessVerification(guess);
+    }
+
+    public void initializeGame() {
+        model.initializeGame();
+    }
+
+    public void printUserLog() {
+        String[] log = model.getUserLog();
+        for (String s : log) {
+            System.out.println(s);
+        }
+    }
+
+    public boolean isShowErrorFlag() {
+        return model.isShowErrorFlag();
+    }
+
+    public boolean isShowEquationFlag() {
+        return model.isShowEquationFlag();
+    }
+
+    public boolean isRandomEquationFlag() {
+        return model.isRandomEquationFlag();
+    }
+
+    public void updateUserLog(String guess) {
+        model.updateUserLog(guess);
+    }
+}

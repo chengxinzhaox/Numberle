@@ -1,77 +1,77 @@
 package views.Layouts;
 
 import java.awt.*;
-import javax.swing.*;
 
 public class KeyboardLayout implements LayoutManager2 {
-    private int hgap = 10; // 水平间隙
-    private int vgap = 10; // 垂直间隙
 
     @Override
     public void addLayoutComponent(String name, Component comp) {
-        // 该方法不需要实现体，因为我们不使用名称来管理组件
     }
 
     @Override
     public void removeLayoutComponent(Component comp) {
-        // 移除组件时不需要特殊处理
     }
 
+    /**
+     * Calculates the preferred size dimensions for the specified container, given the components it contains.
+     * @param parent the container to be laid out
+     * @return the preferred size of the container
+     */
     @Override
     public Dimension preferredLayoutSize(Container parent) {
-        // 计算并返回最佳布局大小
         return new Dimension(700, 150);
     }
 
     @Override
     public Dimension minimumLayoutSize(Container parent) {
-        // 返回最小布局大小
         return preferredLayoutSize(parent);
     }
 
+
+    /**
+     * Lays out the specified container.
+     * @param parent the container to be laid out
+     */
     @Override
     public void layoutContainer(Container parent) {
-        // 实际布局逻辑
         int n = parent.getComponentCount();
         if (n == 0) return;
 
         int totalWidth = parent.getWidth();
-        int y = vgap; // 初始y坐标
-        int x = hgap; // 初始x坐标
+        int gap = 10;
+        int x;
+        int y = 10;
 
-        // 计算第一行和第二行的宽度
         int firstRowWidth = 0;
         int secondRowWidth = 0;
-        for (int i = 0; i < 10; i++) { // 假设前10个是数字
-            firstRowWidth += parent.getComponent(i).getPreferredSize().width + hgap;
+
+        for (int i = 0; i < 10; i++) {
+            firstRowWidth += parent.getComponent(i).getPreferredSize().width + gap;
         }
-        for (int i = 10; i < n; i++) { // 假设剩下的是操作符
-            secondRowWidth += parent.getComponent(i).getPreferredSize().width + hgap;
+        for (int i = 10; i < n; i++) {
+            secondRowWidth += parent.getComponent(i).getPreferredSize().width + gap;
         }
 
-        // 居中对齐第一行
-        x = (totalWidth - firstRowWidth + hgap) / 2;
+        x = (totalWidth - firstRowWidth + gap) / 2;
         for (int i = 0; i < 10; i++) {
             Component comp = parent.getComponent(i);
             Dimension d = comp.getPreferredSize();
             comp.setBounds(x, y, d.width, d.height);
-            x += d.width + hgap;
+            x += d.width + gap;
         }
 
-        // 居中对齐第二行
-        x = (totalWidth - secondRowWidth + hgap) / 2;
-        y += parent.getComponent(0).getPreferredSize().height + vgap;
+        x = (totalWidth - secondRowWidth + gap) / 2;
+        y += parent.getComponent(0).getPreferredSize().height + gap;
         for (int i = 10; i < n; i++) {
             Component comp = parent.getComponent(i);
             Dimension d = comp.getPreferredSize();
             comp.setBounds(x, y, d.width, d.height);
-            x += d.width + hgap;
+            x += d.width + gap;
         }
     }
 
     @Override
     public void addLayoutComponent(Component comp, Object constraints) {
-        // 该方法不需要实现体，因为我们不使用约束来管理组件
     }
 
     @Override
@@ -91,6 +91,5 @@ public class KeyboardLayout implements LayoutManager2 {
 
     @Override
     public void invalidateLayout(Container target) {
-        // 当布局需要被重新计算时调用
     }
 }

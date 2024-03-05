@@ -1,57 +1,53 @@
 import models.CalculationException;
 import models.CharType;
-import models.GameModel;
-import models.IGameModel;
+import models.Model;
+import models.IModel;
 import views.Messages;
 
 import java.util.Scanner;
 
 public class NumberleCLI {
 
-    private final boolean showErrorFlag;
-    private final boolean showEquationFlag;
-    private final boolean randomEquationFlag;
-
-    private final IGameModel gameModel;
+    private final IModel model;
     private final Scanner scanner;
 
     private NumberleCLI() {
-        this.gameModel = new GameModel();
+        this.model = new Model();
         this.scanner = new Scanner(System.in);
 
-        showErrorFlag = getFlag(Messages.SHOW_ERROR_MESSAGE);
-        showEquationFlag = getFlag(Messages.SHOW_EQUATION_MESSAGE);
-        randomEquationFlag = getFlag(Messages.RANDOM_EQUATION_MESSAGE);
+        model.setShowErrorFlag(getFlag(Messages.SHOW_ERROR_MESSAGE));
+        model.setShowEquationFlag(getFlag(Messages.SHOW_EQUATION_MESSAGE));
+        model.setRandomEquationFlag(getFlag(Messages.RANDOM_EQUATION_MESSAGE));
     }
 
     /**
      * Start the game, the main logic of the game
      */
     private void startGame() {
-        gameModel.initializeGame(randomEquationFlag);
+        model.initializeGame();
         String guess;
         printGameStart();
 
         do {
-            if (showEquationFlag) {
-                printMessage(Messages.TARGET_EQUATION_MESSAGE + gameModel.getEquation());
+            if (model.isShowEquationFlag()) {
+                printMessage(Messages.TARGET_EQUATION_MESSAGE + model.getEquation());
             }
             printMessage(Messages.ENTER_GUESS);
             guess = scanner.nextLine();
 
             try {
-                if (gameModel.guessVerification(guess)) {
-                    gameModel.updateUserLog(guess);
-                    printUserLog(gameModel.getUserLog(), gameModel.getEquation());
+                if (model.guessVerification(guess)) {
+                    model.updateUserLog(guess);
+                    printUserLog(model.getUserLog(), model.getEquation());
                 }
             } catch (CalculationException e) {
-                if (showErrorFlag) {
+                if (model.isShowErrorFlag()) {
                     printWarn(e.getMessage());
                 }
             }
-        } while (!gameModel.ifOver(guess));
+        } while (!model.isOver(guess));
 
-        if (gameModel.ifWin(guess)) {
+        if (model.isWin(guess)) {
             printGreen(Messages.WIN_MESSAGE);
         } else {
             printWarn(Messages.LOSE_MESSAGE);
@@ -129,9 +125,9 @@ public class NumberleCLI {
      */
     private void printGameStart() {
         System.out.println(Messages.CUT_OFF + Messages.GAME_START + Messages.CUT_OFF);
-        printGreen(Messages.GREEN_INFO + "\n");
-        printOrange(Messages.ORANGE_INFO + "\n");
-        printGray(Messages.GRAY_INFO + "\n");
+        printGreen(Messages.GREEN_INFO);
+        printOrange(Messages.ORANGE_INFO);
+        printGray(Messages.GRAY_INFO);
     }
 
     /**
@@ -166,7 +162,7 @@ public class NumberleCLI {
      */
     private void printSingleList(String list, String equation) {
         for (int i = 0; i < equation.length(); i++) {
-            CharType charType = gameModel.checkCharType(list.charAt(i), i);
+            CharType charType = model.checkCharType(list.charAt(i), i);
             switch (charType) {
                 case GREEN -> printGreen(String.valueOf(list.charAt(i)));
                 case ORANGE -> printOrange(String.valueOf(list.charAt(i)));
