@@ -22,11 +22,6 @@ public class Model extends Observable implements IModel {
     @Override
     public void initializeGame() {
 
-        System.out.println("initializeGame");
-        System.out.println("ShowErrorFlag: " + showErrorFlag);
-        System.out.println("ShowEquationFlag: " + showEquationFlag);
-        System.out.println("RandomEquationFlag: " + randomEquationFlag);
-
         userLog = new String[LIMIT];
         guessTime = 0;
 
@@ -35,9 +30,6 @@ public class Model extends Observable implements IModel {
         } else {
             equation = GetEquation.getFixedEquation();
         }
-
-        System.out.println(equation);
-
         Arrays.fill(userLog, Messages.PLACE_HOLDER.repeat(equation.length()));
 
         setChanged();
