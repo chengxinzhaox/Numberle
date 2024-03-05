@@ -10,6 +10,8 @@ public class MyColors extends Color {
 
     public static final MyColors GREEN = new MyColors("#60bea6");
     public static final MyColors ORANGE = new MyColors("#ea9e77");
+    public static final MyColors ERROR = new MyColors("#bb5753");
+    public static final MyColors BACKGROUND = new MyColors("#eeeeee");
 
     public MyColors(String hex) {
         super(Integer.parseInt(hex.substring(1), 16));

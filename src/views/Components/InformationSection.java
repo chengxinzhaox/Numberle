@@ -5,13 +5,17 @@ import views.MyColors;
 import javax.swing.*;
 import java.awt.*;
 
-public class InformationSection extends JTextField {
+public class InformationSection extends JLabel {
 
-    public InformationSection(String text) {
+    public InformationSection(String text, Color color) {
         super(text);
-        setHorizontalAlignment(JTextField.CENTER);
-        setFont(new Font("Arial", Font.PLAIN, 22));
-        setForeground(MyColors.GREEN);
+        setFont(new Font("Arial", Font.BOLD, 20));
+        setForeground(color);
+        setBackground(getBackground());
+    }
+
+    public void setOpacity(float opacity) {
+        setBackground(new Color(0, 0, 0, (int) (opacity * 255)));
     }
 
     public void setColor(MyColors color) {

@@ -53,4 +53,16 @@ public class Controller {
     public void updateUserLog(String guess) {
         model.updateUserLog(guess);
     }
+
+    public String getEquation() {
+        return model.getEquation();
+    }
+
+    public boolean isWin(String guess) {
+        return model.isWin(guess);
+    }
+
+    public boolean isOver(String guess) {
+        return model.isOver(guess);
+    }
 }

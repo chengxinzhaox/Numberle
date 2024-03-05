@@ -2,7 +2,7 @@ package views;
 
 public class Messages {
     public static final String PLACE_HOLDER = "_";
-    public static final String GAME_START = "Game Start";
+    public static final String GAME_START = "Welcome to Numberle!";
     public static final String LOG_HEADER = "-YOUR LOG-";
     public static final String CUT_OFF = "----------";
     public static final String ENTER_GUESS = "Enter your guess: ";

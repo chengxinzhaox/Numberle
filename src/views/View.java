@@ -8,6 +8,7 @@ import models.IModel;
 import views.Components.InformationSection;
 import views.Components.NumberCell;
 import views.Components.NumberKey;
+
 import views.Layouts.KeyboardLayout;
 import views.Layouts.MenuLayout;
 import views.Layouts.NumberCellLayout;
@@ -27,6 +28,9 @@ public class View extends JFrame implements Observer {
     NumberCell[] cellList = new NumberCell[42];
     NumberKey[] keyList = new NumberKey[15];
     NumberKey[] menuList = new NumberKey[4];
+    InformationSection informationSection;
+    InformationSection errorSection;
+    InformationSection equationSection;
 
     JPanel keypadPanel;
     JPanel cellPanel;
@@ -37,7 +41,10 @@ public class View extends JFrame implements Observer {
 
     int inputIndex;
 
+    boolean isOver = false;
+
     String guess = "";
+    String errorInfo = "";
 
     public View(Model model, Controller controller) {
 
@@ -99,7 +106,17 @@ public class View extends JFrame implements Observer {
             addMenuButton(menuPanel, "RANDOM", MyColors.GRAY);
         }
 
-        menuPanel.add(new InformationSection("Welcome to Numberle"));
+        informationSection = new InformationSection("", MyColors.DEEP_GRAY);
+        errorSection = new InformationSection("", MyColors.ERROR);
+
+        if (controller.isShowEquationFlag()) {
+            equationSection = new InformationSection("Equation: " + controller.getEquation(), MyColors.DEEP_GRAY);
+        } else {
+            equationSection = new InformationSection("", MyColors.DEEP_GRAY);
+        }
+        menuPanel.add(informationSection);
+        menuPanel.add(errorSection);
+        menuPanel.add(equationSection);
 
         add(menuPanel, BorderLayout.NORTH);
     }
@@ -207,37 +224,46 @@ public class View extends JFrame implements Observer {
      */
     private void keyEventHolder(NumberKey source) {
         String key = source.getText();
-        if (key.matches("[0-9+\\-×÷=]+")) {
-            if (guess.length() < 7) {
-                guess += key;
-                inputIndex++;
-                cellList[inputIndex - 1].setText(key);
-                cellList[inputIndex - 1].setForeground(MyColors.DEEP_GRAY);
+        if (!isOver) {
+            if (key.matches("[0-9+\\-×÷=]+")) {
+                if (guess.length() < 7) {
+                    guess += key;
+                    inputIndex++;
+                    cellList[inputIndex - 1].setText(key);
+                    cellList[inputIndex - 1].setForeground(MyColors.DEEP_GRAY);
+                }
             }
-        }
-        if (key.equals("<")) {
-            if (inputIndex > 0 && !guess.isEmpty()) {
-                guess = guess.substring(0, guess.length() - 1);
-                inputIndex--;
-                cellList[inputIndex].setText("");
+            if (key.equals("<")) {
+                if (inputIndex > 0 && !guess.isEmpty()) {
+                    guess = guess.substring(0, guess.length() - 1);
+                    inputIndex--;
+                    cellList[inputIndex].setText("");
+                }
             }
-        }
 
-        if (guess.length() == 7) {
             if (key.equals("Enter")) {
                 try {
                     String guess = replaceOperatorToModel(this.guess);
                     if (controller.guessVerification(guess)) {
                         controller.updateUserLog(guess);
-                        if (model.isWin(guess)) {
-                            System.out.println("You win!");
-                            model.initializeGame();
+                        if (controller.isWin(guess)) {
+                            informationSection.setText(Messages.WIN_MESSAGE);
+                            informationSection.setColor(MyColors.GREEN);
+                            isOver = true;
+                        } else if (controller.isOver(guess)) {
+                            informationSection.setText(Messages.LOSE_MESSAGE);
+                            informationSection.setColor(MyColors.ERROR);
+                            isOver = true;
                         }
                     }
                 } catch (CalculationException e) {
-                    throw new RuntimeException(e);
+                    errorInfo = e.getMessage();
+                    updateErrorSection();
+                    return;
                 }
                 guess = "";
+                errorInfo = "";
+                updateErrorSection();
                 controller.printUserLog();
             }
         }
@@ -255,12 +281,22 @@ public class View extends JFrame implements Observer {
             rePlay();
         }
         if (key.equals("SHOW ERROR")) {
-            controller.setShowErrorFlag(!controller.isShowErrorFlag());
-            rePlay();
+            if (controller.isShowErrorFlag()) {
+                controller.setShowErrorFlag(false);
+                updateErrorSection();
+            } else {
+                controller.setShowErrorFlag(true);
+                updateErrorSection();
+            }
         }
         if (key.equals("TEST")) {
-            controller.setShowEquationFlag(!controller.isShowEquationFlag());
-            rePlay();
+            if (controller.isShowEquationFlag()) {
+                controller.setShowEquationFlag(false);
+                updateEquationSection();
+            } else {
+                controller.setShowEquationFlag(true);
+                updateEquationSection();
+            }
         }
         if (key.equals("RANDOM")) {
             controller.setRandomEquationFlag(!controller.isRandomEquationFlag());
@@ -276,8 +312,17 @@ public class View extends JFrame implements Observer {
         keyListIndex = 0;
         inputIndex = 0;
         guess = "";
+        isOver = false;
         updatePanel();
         reFreshKeyList();
+
+        updateEquationSection();
+
+        errorInfo = "";
+        informationSection.setText("");
+
+        updateErrorSection();
+
         controller.printUserLog();
     }
 
@@ -348,6 +393,7 @@ public class View extends JFrame implements Observer {
 
     /**
      * Update the menu panel
+     * Re-color the menu panel
      */
     private void updateMenuPanel() {
         System.out.println("Update menu panel");
@@ -371,6 +417,32 @@ public class View extends JFrame implements Observer {
     }
 
     /**
+     * Update the error section
+     */
+    private void updateErrorSection() {
+        if (controller.isShowErrorFlag()) {
+            errorSection.setText(errorInfo);
+            errorSection.setColor(MyColors.ERROR);
+        } else {
+            errorSection.setText(errorInfo);
+            errorSection.setColor(MyColors.BACKGROUND);
+        }
+        updateMenuPanel();
+    }
+
+    /**
+     * Update the equation section
+     */
+    private void updateEquationSection() {
+        if (controller.isShowEquationFlag()) {
+            equationSection.setText("Equation: " + replaceOperatorToView(controller.getEquation()));
+        } else {
+            equationSection.setText("");
+        }
+        updateMenuPanel();
+    }
+
+    /**
      * Refresh the key list when replay the game
      */
     private void reFreshKeyList() {
@@ -380,6 +452,12 @@ public class View extends JFrame implements Observer {
         }
     }
 
+    /**
+     * Update the view
+     *
+     * @param o   the observable object
+     * @param arg the object passed to the notifyObservers method
+     */
     @Override
     public void update(Observable o, Object arg) {
         updatePanel();
