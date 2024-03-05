@@ -5,6 +5,7 @@ import models.CalculationException;
 import models.CharType;
 import models.Model;
 import models.IModel;
+import views.Components.InformationSection;
 import views.Components.NumberCell;
 import views.Components.NumberKey;
 import views.Layouts.KeyboardLayout;
@@ -25,31 +26,39 @@ public class View extends JFrame implements Observer {
 
     NumberCell[] cellList = new NumberCell[42];
     NumberKey[] keyList = new NumberKey[15];
+    NumberKey[] menuList = new NumberKey[4];
 
     JPanel keypadPanel;
     JPanel cellPanel;
     JPanel menuPanel;
 
     int keyListIndex;
+    int menuListIndex;
+
     int inputIndex;
+
     String guess = "";
 
     public View(Model model, Controller controller) {
 
-        // Create the GUI
-        createControls();
-
         keyListIndex = 0;
+        menuListIndex = 0;
 
         // Set the model and controller
         this.model = model;
         this.controller = controller;
+
+        // Create the GUI
+        createControls();
 
         // Add the view as an observer of the model
         model.addObserver(this);
         update(model, null);
     }
 
+    /**
+     * Create the GUI
+     */
     public void createControls() {
         setTitle("Numberle");
         setLayout(new BorderLayout(GAP, GAP));
@@ -64,13 +73,33 @@ public class View extends JFrame implements Observer {
         setVisible(true);
     }
 
+    /**
+     * Initialize the menu panel
+     */
     private void initializeMenuPanel() {
         menuPanel = new JPanel(new MenuLayout());
 
-        addMenuButton(menuPanel, "REPLAY", 120, 50, MyColors.ORANGE, 15);
-        addMenuButton(menuPanel, "SHOW ERROR", 120, 50, MyColors.GRAY, 15);
-        addMenuButton(menuPanel, "TEST", 120, 50, MyColors.GRAY, 15);
-        addMenuButton(menuPanel, "RANDOM", 120, 50, MyColors.GRAY, 15);
+        addMenuButton(menuPanel, "REPLAY", MyColors.ORANGE);
+
+        if (controller.isShowErrorFlag()) {
+            addMenuButton(menuPanel, "SHOW ERROR", MyColors.DEEP_GRAY);
+        } else {
+            addMenuButton(menuPanel, "SHOW ERROR", MyColors.GREEN);
+        }
+
+        if (controller.isShowEquationFlag()) {
+            addMenuButton(menuPanel, "TEST", MyColors.DEEP_GRAY);
+        } else {
+            addMenuButton(menuPanel, "TEST", MyColors.GRAY);
+        }
+
+        if (controller.isRandomEquationFlag()) {
+            addMenuButton(menuPanel, "RANDOM", MyColors.DEEP_GRAY);
+        } else {
+            addMenuButton(menuPanel, "RANDOM", MyColors.GRAY);
+        }
+
+        menuPanel.add(new InformationSection("Welcome to Numberle"));
 
         add(menuPanel, BorderLayout.NORTH);
     }
@@ -97,21 +126,30 @@ public class View extends JFrame implements Observer {
         String[] operators = {"<", "+", "-", "×", "÷", "=", "Enter"};
 
         for (String number : numbers) {
-            addButton(keypadPanel, number, 53, 56);
+            addButton(keypadPanel, number, 53);
         }
 
         for (String operator : operators) {
             int width = operator.equals("Enter") || operator.equals("<") ? 117 : 64;
-            addButton(keypadPanel, operator, width, 56);
+            addButton(keypadPanel, operator, width);
         }
         add(keypadPanel, BorderLayout.SOUTH);
     }
 
-    private void addMenuButton(JPanel panel, String text, int width, int height, MyColors color, int fontSize) {
-        NumberKey button = new NumberKey(text, width, height);
+    /**
+     * Add a button to the menu panel
+     *
+     * @param panel the panel to add the button to
+     * @param text  the text to display on the button
+     * @param color the color of the button
+     */
+    private void addMenuButton(JPanel panel, String text, MyColors color) {
+        NumberKey button = new NumberKey(text, 120, 50);
         button.setColor(color);
-        button.font(fontSize);
+        button.font(15);
         panel.add(button);
+        menuList[menuListIndex] = button;
+        menuListIndex++;
         button.addActionListener(e -> MenuButtonEventHolder(button));
     }
 
@@ -122,8 +160,8 @@ public class View extends JFrame implements Observer {
      * @param text  the text to display on the button
      * @param width the width of the button
      */
-    private void addButton(JPanel panel, String text, int width, int height) {
-        NumberKey button = new NumberKey(text, width, height);
+    private void addButton(JPanel panel, String text, int width) {
+        NumberKey button = new NumberKey(text, width, 56);
         if (!(text.equals("Enter") || text.equals("<"))) {
             keyList[keyListIndex] = button;
             keyListIndex++;
@@ -216,10 +254,24 @@ public class View extends JFrame implements Observer {
         if (key.equals("REPLAY")) {
             rePlay();
         }
+        if (key.equals("SHOW ERROR")) {
+            controller.setShowErrorFlag(!controller.isShowErrorFlag());
+            rePlay();
+        }
+        if (key.equals("TEST")) {
+            controller.setShowEquationFlag(!controller.isShowEquationFlag());
+            rePlay();
+        }
+        if (key.equals("RANDOM")) {
+            controller.setRandomEquationFlag(!controller.isRandomEquationFlag());
+            rePlay();
+        }
     }
 
+    /**
+     * Replay the game
+     */
     private void rePlay() {
-        System.out.println("----------Replay----------");
         controller.initializeGame();
         keyListIndex = 0;
         inputIndex = 0;
@@ -295,6 +347,30 @@ public class View extends JFrame implements Observer {
     }
 
     /**
+     * Update the menu panel
+     */
+    private void updateMenuPanel() {
+        System.out.println("Update menu panel");
+        if (controller.isShowErrorFlag()) {
+            menuList[1].setColor(MyColors.DEEP_GRAY);
+        } else {
+            menuList[1].setColor(MyColors.GRAY);
+        }
+
+        if (controller.isShowEquationFlag()) {
+            menuList[2].setColor(MyColors.DEEP_GRAY);
+        } else {
+            menuList[2].setColor(MyColors.GRAY);
+        }
+
+        if (controller.isRandomEquationFlag()) {
+            menuList[3].setColor(MyColors.DEEP_GRAY);
+        } else {
+            menuList[3].setColor(MyColors.GRAY);
+        }
+    }
+
+    /**
      * Refresh the key list when replay the game
      */
     private void reFreshKeyList() {
@@ -307,7 +383,7 @@ public class View extends JFrame implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         updatePanel();
-        System.out.println("Model updated");
+        updateMenuPanel();
         cellPanel.repaint();
         keypadPanel.repaint();
     }

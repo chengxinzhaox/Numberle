@@ -38,6 +38,18 @@ public class Controller {
         return model.isRandomEquationFlag();
     }
 
+    public void setShowErrorFlag(boolean showErrorFlag) {
+        model.setShowErrorFlag(showErrorFlag);
+    }
+
+    public void setShowEquationFlag(boolean showEquationFlag) {
+        model.setShowEquationFlag(showEquationFlag);
+    }
+
+    public void setRandomEquationFlag(boolean randomEquationFlag) {
+        model.setRandomEquationFlag(randomEquationFlag);
+    }
+
     public void updateUserLog(String guess) {
         model.updateUserLog(guess);
     }

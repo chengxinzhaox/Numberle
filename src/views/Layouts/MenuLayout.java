@@ -4,9 +4,8 @@ import java.awt.*;
 
 public class MenuLayout implements LayoutManager2 {
 
-    private int maxWidth = 700;
-    private int maxHeight = 100;
-    private int gap = 20; // 组件间的间隔
+    private final int maxWidth = 700;
+    private final int maxHeight = 140;
 
     @Override
     public void addLayoutComponent(String name, Component comp) {}
@@ -16,11 +15,13 @@ public class MenuLayout implements LayoutManager2 {
 
     @Override
     public Dimension preferredLayoutSize(Container parent) {
+        // 返回容器的固定大小
         return new Dimension(maxWidth, maxHeight);
     }
 
     @Override
     public Dimension minimumLayoutSize(Container parent) {
+        // 返回容器的固定大小
         return new Dimension(maxWidth, maxHeight);
     }
 
@@ -28,29 +29,45 @@ public class MenuLayout implements LayoutManager2 {
     public void layoutContainer(Container parent) {
         synchronized (parent.getTreeLock()) {
             int ncomponents = parent.getComponentCount();
-            int totalGapSize = (ncomponents - 1) * gap; // 计算总间隔大小
-            int totalComponentsWidth = 0;
-            for (Component comp : parent.getComponents()) {
-                totalComponentsWidth += comp.getPreferredSize().width;
+            if (ncomponents == 0) {
+                return;
             }
-            totalComponentsWidth += totalGapSize; // 包括间隔的总宽度
 
-            int startX = (maxWidth - totalComponentsWidth) / 2; // 计算第一个组件的起始X坐标以实现水平居中
-            int containerCenterY = maxHeight / 2; // 容器中心的Y坐标
+            // 第一行组件的布局
+            int totalWidthFirstRow = 0;
+            int gap = 20;
+            for (int i = 0; i < Math.min(ncomponents, 4); i++) {
+                Component comp = parent.getComponent(i);
+                totalWidthFirstRow += comp.getPreferredSize().width + (i < 3 ? gap : 0); // 计算第一行总宽度，包括间隔
+            }
+            int startX = (maxWidth - totalWidthFirstRow) / 2; // 使第一行居中
+            // 组件距离窗口最上方的间距
+            int topMargin = 30;
+            int y = topMargin; // 第一行的起始Y坐标，考虑顶部间距
+            for (int i = 0; i < Math.min(ncomponents, 4); i++) {
+                Component comp = parent.getComponent(i);
+                Dimension d = comp.getPreferredSize();
+                comp.setBounds(startX, y, d.width, d.height);
+                startX += d.width + gap;
+            }
 
-            for (Component comp : parent.getComponents()) {
-                Dimension compSize = comp.getPreferredSize();
-                int compY = containerCenterY - compSize.height / 2; // 计算组件的Y坐标以实现垂直居中
-
-                comp.setBounds(startX, compY, compSize.width, compSize.height);
-                startX += compSize.width + gap; // 更新下一个组件的起始X坐标，包括间隔
+            // 第二行组件的布局
+            if (ncomponents > 4) {
+                Component comp = parent.getComponent(4);
+                Dimension d = comp.getPreferredSize();
+                // 计算第二行组件的起始X坐标，以使其居中
+                startX = (maxWidth - d.width) / 2;
+                // 第二行的起始Y坐标，考虑第一行组件的高度、指定的行间距以及顶部间距
+                // 第一行与第二行的间距
+                int rowGap = 30;
+                y += parent.getComponent(0).getPreferredSize().height + rowGap;
+                comp.setBounds(startX, y, d.width, d.height);
             }
         }
     }
 
     @Override
-    public void addLayoutComponent(Component comp, Object constraints) {
-    }
+    public void addLayoutComponent(Component comp, Object constraints) {}
 
     @Override
     public float getLayoutAlignmentX(Container target) {
@@ -63,8 +80,7 @@ public class MenuLayout implements LayoutManager2 {
     }
 
     @Override
-    public void invalidateLayout(Container target) {
-    }
+    public void invalidateLayout(Container target) {}
 
     @Override
     public Dimension maximumLayoutSize(Container target) {
