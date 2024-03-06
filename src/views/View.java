@@ -86,24 +86,28 @@ public class View extends JFrame implements Observer {
     private void initializeMenuPanel() {
         menuPanel = new JPanel(new MenuLayout());
 
-        addMenuButton(menuPanel, "REPLAY", MyColors.ORANGE);
+        if (controller.getGuessTime() == 0) {
+            addMenuButton(menuPanel, "REPLAY", MyColors.GRAY);
+        } else {
+            addMenuButton(menuPanel, "REPLAY", MyColors.ORANGE);
+        }
 
         if (controller.isShowErrorFlag()) {
-            addMenuButton(menuPanel, "SHOW ERROR", MyColors.DEEP_GRAY);
+            addMenuButton(menuPanel, "SHOW ERROR", MyColors.KEY_ON);
         } else {
-            addMenuButton(menuPanel, "SHOW ERROR", MyColors.GREEN);
+            addMenuButton(menuPanel, "SHOW ERROR", MyColors.KEY_OFF);
         }
 
         if (controller.isShowEquationFlag()) {
-            addMenuButton(menuPanel, "TEST", MyColors.DEEP_GRAY);
+            addMenuButton(menuPanel, "TEST", MyColors.KEY_ON);
         } else {
-            addMenuButton(menuPanel, "TEST", MyColors.GRAY);
+            addMenuButton(menuPanel, "TEST", MyColors.KEY_OFF);
         }
 
         if (controller.isRandomEquationFlag()) {
-            addMenuButton(menuPanel, "RANDOM", MyColors.DEEP_GRAY);
+            addMenuButton(menuPanel, "RANDOM", MyColors.KEY_ON);
         } else {
-            addMenuButton(menuPanel, "RANDOM", MyColors.GRAY);
+            addMenuButton(menuPanel, "RANDOM", MyColors.KEY_OFF);
         }
 
         informationSection = new InformationSection("", MyColors.DEEP_GRAY);
@@ -161,7 +165,7 @@ public class View extends JFrame implements Observer {
      * @param color the color of the button
      */
     private void addMenuButton(JPanel panel, String text, MyColors color) {
-        NumberKey button = new NumberKey(text, 120, 50);
+        NumberKey button = new NumberKey(text, 140, 50);
         button.setColor(color);
         button.font(15);
         panel.add(button);
@@ -264,7 +268,8 @@ public class View extends JFrame implements Observer {
                 guess = "";
                 errorInfo = "";
                 updateErrorSection();
-                controller.printUserLog();
+                updateReplayButton();
+                //controller.printUserLog();
             }
         }
         //System.out.println("guess: " + guess + " index: " + inputIndex);
@@ -276,10 +281,14 @@ public class View extends JFrame implements Observer {
      * @param source the source of the event
      */
     private void MenuButtonEventHolder(NumberKey source) {
+
         String key = source.getText();
         if (key.equals("REPLAY")) {
-            rePlay();
+            if (controller.getGuessTime() != 0) {
+                rePlay();
+            }
         }
+
         if (key.equals("SHOW ERROR")) {
             if (controller.isShowErrorFlag()) {
                 controller.setShowErrorFlag(false);
@@ -322,8 +331,9 @@ public class View extends JFrame implements Observer {
         informationSection.setText("");
 
         updateErrorSection();
+        updateReplayButton();
 
-        controller.printUserLog();
+        //controller.printUserLog();
     }
 
     /**
@@ -370,9 +380,7 @@ public class View extends JFrame implements Observer {
                 for (NumberKey key : keyList) {
                     if (key.getText().equals(cellText)) {
                         switch (type) {
-                            case GREEN -> {
-                                key.setColor(MyColors.GREEN);
-                            }
+                            case GREEN -> key.setColor(MyColors.GREEN);
                             case ORANGE -> {
                                 if (key.getColor() != MyColors.GREEN) {
                                     key.setColor(MyColors.ORANGE);
@@ -396,23 +404,22 @@ public class View extends JFrame implements Observer {
      * Re-color the menu panel
      */
     private void updateMenuPanel() {
-        System.out.println("Update menu panel");
         if (controller.isShowErrorFlag()) {
-            menuList[1].setColor(MyColors.DEEP_GRAY);
+            menuList[1].setColor(MyColors.KEY_ON);
         } else {
-            menuList[1].setColor(MyColors.GRAY);
+            menuList[1].setColor(MyColors.KEY_OFF);
         }
 
         if (controller.isShowEquationFlag()) {
-            menuList[2].setColor(MyColors.DEEP_GRAY);
+            menuList[2].setColor(MyColors.KEY_ON);
         } else {
-            menuList[2].setColor(MyColors.GRAY);
+            menuList[2].setColor(MyColors.KEY_OFF);
         }
 
         if (controller.isRandomEquationFlag()) {
-            menuList[3].setColor(MyColors.DEEP_GRAY);
+            menuList[3].setColor(MyColors.KEY_ON);
         } else {
-            menuList[3].setColor(MyColors.GRAY);
+            menuList[3].setColor(MyColors.KEY_OFF);
         }
     }
 
@@ -440,6 +447,17 @@ public class View extends JFrame implements Observer {
             equationSection.setText("");
         }
         updateMenuPanel();
+    }
+
+    /**
+     * Update the replay button
+     */
+    private void updateReplayButton() {
+        if (controller.getGuessTime() == 0) {
+            menuList[0].setColor(MyColors.GRAY);
+        } else {
+            menuList[0].setColor(MyColors.ORANGE);
+        }
     }
 
     /**

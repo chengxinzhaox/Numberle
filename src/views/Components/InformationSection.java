@@ -9,7 +9,7 @@ public class InformationSection extends JLabel {
 
     public InformationSection(String text, Color color) {
         super(text);
-        setFont(new Font("Arial", Font.BOLD, 20));
+        setFont(new Font("Montserrat", Font.BOLD, 20));
         setForeground(color);
         setBackground(getBackground());
     }

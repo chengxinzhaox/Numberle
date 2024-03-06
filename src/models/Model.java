@@ -30,6 +30,7 @@ public class Model extends Observable implements IModel {
         } else {
             equation = GetEquation.getFixedEquation();
         }
+
         Arrays.fill(userLog, Messages.PLACE_HOLDER.repeat(equation.length()));
 
         setChanged();
@@ -79,6 +80,11 @@ public class Model extends Observable implements IModel {
     @Override
     public String getEquation() {
         return equation;
+    }
+
+    @Override
+    public int getGuessTime() {
+        return guessTime;
     }
 
     @Override

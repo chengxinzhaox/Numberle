@@ -5,7 +5,6 @@ import models.Model;
 
 /**
  * The controller class
-
  */
 public class Controller {
 
@@ -13,6 +12,7 @@ public class Controller {
 
     /**
      * Constructor
+     *
      * @param model the model
      */
     public Controller(Model model) {
@@ -21,6 +21,7 @@ public class Controller {
 
     /**
      * Get the flag
+     *
      * @param guess the guess
      * @return the flag
      */
@@ -45,8 +46,10 @@ public class Controller {
         }
     }
 
+
     /**
      * Get show error flag
+     *
      * @return if the error flag is shown
      */
     public boolean isShowErrorFlag() {
@@ -55,6 +58,7 @@ public class Controller {
 
     /**
      * Get show equation flag
+     *
      * @return if the equation flag is shown
      */
     public boolean isShowEquationFlag() {
@@ -63,6 +67,7 @@ public class Controller {
 
     /**
      * Get random equation flag
+     *
      * @return if random equation
      */
     public boolean isRandomEquationFlag() {
@@ -71,6 +76,7 @@ public class Controller {
 
     /**
      * Set the error flag
+     *
      * @param showErrorFlag set the error flag
      */
     public void setShowErrorFlag(boolean showErrorFlag) {
@@ -79,6 +85,7 @@ public class Controller {
 
     /**
      * Set the equation flag
+     *
      * @param showEquationFlag set the equation flag
      */
     public void setShowEquationFlag(boolean showEquationFlag) {
@@ -87,6 +94,7 @@ public class Controller {
 
     /**
      * Set the random equation flag
+     *
      * @param randomEquationFlag set the random equation flag
      */
     public void setRandomEquationFlag(boolean randomEquationFlag) {
@@ -95,6 +103,7 @@ public class Controller {
 
     /**
      * Update the user log
+     *
      * @param guess the guess
      */
     public void updateUserLog(String guess) {
@@ -103,6 +112,7 @@ public class Controller {
 
     /**
      * Get the equation
+     *
      * @return the equation
      */
     public String getEquation() {
@@ -110,7 +120,17 @@ public class Controller {
     }
 
     /**
+     * Get the guess time
+     *
+     * @return the guess time
+     */
+    public int getGuessTime() {
+        return model.getGuessTime();
+    }
+
+    /**
      * Check if win
+     *
      * @param guess the guess
      * @return if win
      */
@@ -120,6 +140,7 @@ public class Controller {
 
     /**
      * Check if over
+     *
      * @param guess the guess
      * @return if over
      */

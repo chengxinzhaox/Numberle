@@ -63,6 +63,8 @@ public interface IModel {
      */
     void initializeGame();
 
+    int getGuessTime();
+
     /**
      * Set the show error flag
      *

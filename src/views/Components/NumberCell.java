@@ -25,8 +25,6 @@ public class NumberCell extends JTextField {
         setPreferredSize(new Dimension(weight, height));
         setHorizontalAlignment(JTextField.CENTER);
 
-        setBackground(MyColors.TINT_GRAY);
-
         // Set custom rounded border
         setBorder(new RoundedBorder(ARC, ARC));
         setOpaque(false);
@@ -35,8 +33,7 @@ public class NumberCell extends JTextField {
 
         // Set the font style and size
         setForeground(MyColors.DEEP_GRAY);
-        setFont(new Font("Arial", Font.BOLD, 20));
-
+        setFont(new Font("Montserrat", Font.BOLD, 20));
     }
 
     /**
