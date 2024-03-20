@@ -6,12 +6,12 @@ import views.Messages;
 
 import java.util.Scanner;
 
-public class NumberleCLI {
+public class CLIApp {
 
     private final IModel model;
     private final Scanner scanner;
 
-    private NumberleCLI() {
+    private CLIApp() {
         this.model = new Model();
         this.scanner = new Scanner(System.in);
 
@@ -193,7 +193,7 @@ public class NumberleCLI {
     }
 
     public static void main(String[] args) {
-        NumberleCLI numberleCLI = new NumberleCLI();
+        CLIApp numberleCLI = new CLIApp();
         numberleCLI.startGame();
     }
 }

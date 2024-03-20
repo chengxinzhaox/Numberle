@@ -1,21 +1,21 @@
 package controllers;
 
 import models.CalculationException;
-import models.Model;
+import models.IModel;
 
 /**
  * The controller class
  */
 public class Controller {
 
-    private final Model model;
+    private final IModel model;
 
     /**
      * Constructor
      *
      * @param model the model
      */
-    public Controller(Model model) {
+    public Controller(IModel model) {
         this.model = model;
     }
 
