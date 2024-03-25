@@ -3,8 +3,8 @@ package views;
 import controllers.Controller;
 import models.CalculationException;
 import models.CharType;
-import models.Model;
 import models.IModel;
+import models.Model;
 import views.Components.InformationSection;
 import views.Components.NumberCell;
 import views.Components.NumberKey;
@@ -46,7 +46,7 @@ public class View extends JFrame implements Observer {
     String guess = "";
     String errorInfo = "";
 
-    public View(Model model, Controller controller) {
+    public View(IModel model, Controller controller) {
 
         keyListIndex = 0;
         menuListIndex = 0;
@@ -59,8 +59,8 @@ public class View extends JFrame implements Observer {
         createControls();
 
         // Add the view as an observer of the model
-        model.addObserver(this);
-        update(model, null);
+        ((Model) this.model).addObserver(this);
+        update((Model) this.model, null);
     }
 
     /**
