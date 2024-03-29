@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ModelTest {
-    Model model;
+    IModel model;
     private final String fixedEquation = "4-1*3=1";
     private final String notEqual = "4-1*3=0";
 
