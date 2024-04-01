@@ -22,6 +22,64 @@ public class ModelTest {
     }
 
     /**
+     * Test user input 2 times of wrong equation and then 1 correct equation
+     */
+    @Test
+    public void testScenario1() {
+        model.updateUserLog(notEqual);
+        assertFalse(model.isOver(notEqual));
+        assertFalse(model.isWin(notEqual));
+
+        model.updateUserLog(notEqual);
+        assertFalse(model.isOver(notEqual));
+        assertFalse(model.isWin(notEqual));
+
+        model.updateUserLog(fixedEquation);
+        assertTrue(model.isOver(fixedEquation));
+        assertTrue(model.isWin(fixedEquation));
+    }
+
+    /**
+     * Test user input 6 times of wrong equation
+     */
+    @Test
+    public void testScenario2() {
+        model.updateUserLog(notEqual);
+        assertFalse(model.isOver(notEqual));
+        assertFalse(model.isWin(notEqual));
+
+        model.updateUserLog(notEqual);
+        assertFalse(model.isOver(notEqual));
+        assertFalse(model.isWin(notEqual));
+
+        model.updateUserLog(notEqual);
+        assertFalse(model.isOver(notEqual));
+        assertFalse(model.isWin(notEqual));
+
+        model.updateUserLog(notEqual);
+        assertFalse(model.isOver(notEqual));
+        assertFalse(model.isWin(notEqual));
+
+        model.updateUserLog(notEqual);
+        assertFalse(model.isOver(notEqual));
+        assertFalse(model.isWin(notEqual));
+
+        model.updateUserLog(notEqual);
+        assertTrue(model.isOver(notEqual));
+        assertFalse(model.isWin(notEqual));
+    }
+
+    /**
+     * Test user input 1 times of correct equation
+     */
+    @Test
+    public void testScenario3() {
+        model.updateUserLog(fixedEquation);
+        assertTrue(model.isOver(fixedEquation));
+        assertTrue(model.isWin(fixedEquation));
+    }
+
+    /**
      * Test if the game is initialized correctly
      */
     @Test

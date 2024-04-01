@@ -7,9 +7,10 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GetEquation {
-    /**
-     * Get a random equation from the file
-     * @return a random equation
+
+    /*@
+        requires true;
+        ensures \result != null;
      */
     static String getRandomEquation() {
         try {
@@ -21,6 +22,10 @@ public class GetEquation {
         }
     }
 
+    /*@
+        requires true;
+        ensures \result != null;
+     */
     static String getFixedEquation() {
         try {
             List<String> lines = Files.readAllLines(Paths.get("src/resource/equations.txt"));

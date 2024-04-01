@@ -1,9 +1,10 @@
 package models;
 
-/**
- * Custom exception for the calculator
- */
-public class CalculationException extends Exception{
+public class CalculationException extends Exception {
+
+    /*@
+        requires message != null;
+    */
     public CalculationException(String message) {
         super(message);
     }

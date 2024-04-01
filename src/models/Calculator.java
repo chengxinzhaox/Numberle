@@ -6,12 +6,12 @@ import java.util.Stack;
 
 public class Calculator {
 
-    /**
-     * Validate the input and compute the result
-     *
-     * @param guess the input
-     * @return true if the input is valid and the result is correct
-     */
+    /*@
+        requires guess != null;
+        ensures \result == true;
+        signals (CalculationException e) false;
+        pure;
+    */
     public static boolean validateAndCompute(String guess) throws CalculationException {
 
         //Validate if too long

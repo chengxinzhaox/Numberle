@@ -19,31 +19,22 @@ public class Controller {
         this.model = model;
     }
 
-    /**
-     * Get the flag
-     *
-     * @param guess the guess
-     * @return the flag
-     */
+    /*@
+        requires guess != null;
+        ensures \result == model.guessVerification(guess);
+        signals_only CalculationException;
+    */
     public boolean guessVerification(String guess) throws CalculationException {
+        assert guess != null;
         return model.guessVerification(guess);
     }
 
-    /**
-     * Initialize the game
-     */
+    /*@
+       assignable \everything;
+       ensures model.getGuessTime() == 0;
+    */
     public void initializeGame() {
         model.initializeGame();
-    }
-
-    /**
-     * Get the user log
-     */
-    public void printUserLog() {
-        String[] log = model.getUserLog();
-        for (String s : log) {
-            System.out.println(s);
-        }
     }
 
 

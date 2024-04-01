@@ -66,7 +66,7 @@ public class View extends JFrame implements Observer {
     /**
      * Create the GUI
      */
-    public void createControls() {
+    private void createControls() {
         setTitle("Numberle");
         setLayout(new BorderLayout(GAP, GAP));
 
