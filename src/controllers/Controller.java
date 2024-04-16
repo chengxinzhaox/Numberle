@@ -24,6 +24,13 @@ public class Controller {
         ensures \result == model.guessVerification(guess);
         signals_only CalculationException;
     */
+
+    /**
+     * Get the flag
+     *
+     * @param guess the guess
+     * @return the flag
+     */
     public boolean guessVerification(String guess) throws CalculationException {
         assert guess != null;
         return model.guessVerification(guess);
@@ -33,6 +40,10 @@ public class Controller {
        assignable \everything;
        ensures model.getGuessTime() == 0;
     */
+
+    /**
+     * Initialize the game
+     */
     public void initializeGame() {
         model.initializeGame();
     }

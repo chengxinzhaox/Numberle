@@ -12,6 +12,13 @@ public class Calculator {
         signals (CalculationException e) false;
         pure;
     */
+
+    /**
+     * Validate the input and compute the result
+     *
+     * @param guess the input
+     * @return true if the input is valid and the result is correct
+     */
     public static boolean validateAndCompute(String guess) throws CalculationException {
 
         //Validate if too long

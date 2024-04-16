@@ -12,6 +12,12 @@ public class GetEquation {
         requires true;
         ensures \result != null;
      */
+
+    /**
+     * Get a random equation from the file
+     *
+     * @return a random equation
+     */
     static String getRandomEquation() {
         try {
             List<String> lines = Files.readAllLines(Paths.get("src/resource/equations.txt"));
@@ -25,6 +31,12 @@ public class GetEquation {
     /*@
         requires true;
         ensures \result != null;
+     */
+
+    /**
+     * Get a fixed equation from the file
+     *
+     * @return a fixed equation
      */
     static String getFixedEquation() {
         try {
