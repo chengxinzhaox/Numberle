@@ -269,10 +269,8 @@ public class View extends JFrame implements Observer {
                 errorInfo = "";
                 updateErrorSection();
                 updateReplayButton();
-                //controller.printUserLog();
             }
         }
-        //System.out.println("guess: " + guess + " index: " + inputIndex);
     }
 
     /**
@@ -332,8 +330,6 @@ public class View extends JFrame implements Observer {
 
         updateErrorSection();
         updateReplayButton();
-
-        //controller.printUserLog();
     }
 
     /**
@@ -376,7 +372,6 @@ public class View extends JFrame implements Observer {
             for (char c : logList.toCharArray()) {
                 String cellText = String.valueOf(c);
                 CharType type = model.checkCharType(replaceOperatorToModel(c), i % 7);
-                //System.out.println("Text: " + cellText + " Type: " + type + " Index: " + i % 7);
                 for (NumberKey key : keyList) {
                     if (key.getText().equals(cellText)) {
                         switch (type) {
